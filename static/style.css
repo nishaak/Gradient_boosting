@@ -1,0 +1,188 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: flex-start; /* Start from the top */
+    align-items: center; /* Center horizontally */
+    height: 100vh; /* Full viewport height */
+    background: linear-gradient(to right, #1f1c2c, #928DAB); /* Gradient background */
+    color: white;
+}
+
+form {
+    margin-bottom: 20px; /* Add spacing between forms */
+    padding: 10px; /* Internal padding for forms */
+    border: 2px solid #00bcd4; /* Aqua blue border */
+    border-radius: 10px; /* Rounded corners */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+form:hover {
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker background on hover */
+}
+
+form h3 {
+    margin-top: 0;
+    color: #80deea; /* Lighter blue for form headings */
+}
+
+input[type="checkbox"] {
+    accent-color: #00bcd4; /* Aqua blue for checkbox ticks */
+    margin-right: 10px; /* Space between checkbox and label */
+}
+
+button {
+    margin-top: 15px; /* Space above the button */
+    font-size: 1rem; /* Increase font size for readability */
+    font-weight: bold; /* Make text bold */
+}
+
+button:hover {
+    transform: scale(1.05); /* Slight scaling on hover for interactivity */
+}
+
+select {
+    margin-bottom: 10px; /* Add spacing below select dropdown */
+    font-size: 1rem; /* Slightly larger font for dropdown */
+}
+
+/* Style for section titles */
+h3 {
+    color: #80deea; /* Lighter blue for subsection titles */
+    font-weight: bold;
+    margin-bottom: 10px; /* Spacing below titles */
+}
+
+h1 {
+    color: #00bcd4; /* Aqua blue for main heading */
+    text-align: center;
+    font-size: 2em;
+    margin: 20px 0; /* Space around the heading */
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 20px; /* Space between heading and content */
+}
+
+.sidebar {
+    width: 25%;
+    background-color: rgba(0, 0, 0, 0.7); /* Darker for contrast */
+    color: #fff;
+    padding: 15px;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 2px solid #80deea; /* Lighter blue for the border */
+    transition: background-color 0.3s;
+}
+
+.sidebar:hover {
+    background-color: rgba(0, 0, 0, 0.85); /* Slightly darker on hover */
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    color: #00bcd4; /* Aqua blue for headings */
+}
+
+.main-content {
+    width: 75%;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background for contrast */
+    border-left: 2px solid #80deea; /* Lighter blue border */
+}
+
+h2 {
+    color: #80deea; /* Lighter blue for subheadings */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    color: #e1f5fe; /* Lightest blue for labels */
+    margin-top: 10px;
+}
+
+select {
+    height: 35px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.412); /* Slightly darker background */
+    color: rgb(255, 255, 255);
+    border: 2px solid #00bcd4; /* Aqua blue border */
+    padding: 5px;
+}
+
+select:hover {
+    border-color: #00bcd4; /* Aqua blue on hover */
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #00bcd4; /* Aqua blue background */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #00acc1; /* Lighter aqua blue on hover */
+}
+
+.upload-area {
+    border: 2px dashed #00bcd4; /* Aqua blue border */
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 15px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.upload-area.drag-over {
+    border-color: #00bcd4;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 5px; /* Adjust space as needed */
+}
+
+span {
+    color: white;
+}
+
+#filename {
+    font-weight: bold;
+    color: #e1f5fe; /* Lightest blue for filenames */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 15px;
+    border: 2px solid #00bcd4; /* Aqua blue border around images */
+    border-radius: 10px;
+}
+
+input[type="range"] {
+    width: 80%;
+    margin-right: 10px;
+    accent-color: #00bcd4; /* Aqua blue accent for range input */
+}
