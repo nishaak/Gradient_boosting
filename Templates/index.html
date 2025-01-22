@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gradient Boosting Model and EDA</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+</head>
+<body>
+    <h1> GRADIENT BOOSTING MODEL </h1> 
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Upload Dataset</h2>
+            <form action="/" method="POST" enctype="multipart/form-data" id="upload-form">
+                <label>Select File Format:</label><br>
+                <select name="format" required>
+                    <option value="csv">CSV</option>
+                    <option value="excel">Excel</option>
+                    <option value="tsv">TSV</option>
+                </select>
+                
+                <div class="upload-area" id="upload-area">
+                    <p>Drag and drop file here or</p>
+                    <p>Limit 16MB per file: CSV, TSV, XLSX</p>
+                    
+                    <input type="file" name="file" id="file-input" style="display: none;" required>
+                    <button type="button" id="browse-button">Browse</button>
+                </div>
+                <p id="filename">{{ filename }}</p>
+                <button type="submit" class="submit-btn">Upload</button>
+            </form>
+            <br>
+
+            <form action="/" method="POST">
+                <input type="hidden" name="action" value="Show Column Info">
+                <h3>Show Column Names and Data Types</h3>
+                <button type="submit" class="submit-btn">Show Column Info</button>
+            </form>
+            <br>
+
+            <form action="/" method="POST">
+                <input type="hidden" name="action" value="Show Full Summary Statistics">
+                <h3>Summary Statistics</h3>
+                <button type="submit" class="submit-btn"> Summary Statistics</button>
+            </form>
+            
+            <!-- Data Preprocessing Section -->
+            <form action="/" method="POST">
+                <input type="hidden" name="action" value="Apply All">
+                <h3>Data Preprocessing</h3>
+            
+                <!-- Dropdown for selecting the target column to exclude -->
+                <label for="target_column">Select Target Column to Exclude:</label><br>
+                <select name="target_column" required>
+                    {% for column in columns %}
+                        <option value="{{ column }}">{{ column }}</option>
+                    {% endfor %}
+                </select><br><br>
+            
+                <!-- Dropdown for handling missing values -->
+                <label for="fill_method">Select Method for Handling Missing Values:</label><br>
+                <select name="fill_method" required>
+                    <option value="Mean">Mean</option>
+                    <option value="Median">Median</option>
+                    <option value="Mode">Mode</option>
+                    <option value="Drop">Drop Rows with Missing Values</option>
+                </select><br><br>
+            
+                <!-- Dropdown for encoding method -->
+                <label for="encoding_method">Select Encoding Method:</label><br>
+                <select name="encoding_method" required>
+                    <option value="label">Label Encoding</option>
+                    <option value="onehot">One-Hot Encoding</option>
+                </select><br><br>
+            
+                <!-- Dropdown for scaling method -->
+                <label for="scaling_method">Select Scaling Method:</label><br>
+                <select name="scaling_method" required>
+                    <option value="none">No Scaling</option>
+                    <option value="normalize">Normalize Data (MinMaxScaler)</option>
+                    <option value="standardize">Standardize Data (StandardScaler)</option>
+                    <option value="robust">Robust Scaler</option>
+                </select><br><br>
+            
+                <!-- Common Apply Button -->
+                <button type="submit" class="submit-btn">Apply</button>
+            </form>
+            <br>
+            
+            
+            <!-- Remove Columns -->
+            <form action="/" method="POST">
+                <input type="hidden" name="action" value="Remove Columns">
+                <h3>Remove a Column</h3>
+                <p>Select a column to remove:</p>
+            
+                <!-- Dropdown for selecting one column -->
+                <select name="selected_column" required>
+                    {% if columns %}
+                        {% for column in columns %}
+                            <option value="{{ column }}">{{ column }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="" disabled>No columns available</option>
+                    {% endif %}
+                </select>
+                <br><br>
+            
+                <button type="submit" class="submit-btn">Remove Selected Column</button>
+            </form>
+            <br>
+                    
+            
+            
+            
+           <!-- Data Visualization Section -->
+<h2>Data Visualization</h2>
+<form action="/" method="POST">
+    <input type="hidden" name="action" value="Generate Plot">
+    <label for="plot_type">Select Plot Type:</label><br>
+    <select name="plot_type" required>
+        <option value="scatter">Scatter Plot</option>
+        <option value="line">Line Plot</option>
+        <option value="bar">Bar Plot</option>
+        <option value="hist">Histogram (X-axis only)</option>
+        <option value="violin">Violin Plot</option>
+        <option value="swarm">Swarm Plot</option>
+        <option value="missingness">Missingness Map</option>
+    </select><br>
+    <label for="x_axis">Select X Axis:</label><br>
+    <select name="x_axis" required>
+        {% for column in columns %}
+            <option value="{{ column }}">{{ column }}</option>
+        {% endfor %}
+    </select><br>
+    <label for="y_axis">Select Y Axis:</label><br>
+    <select name="y_axis" id="y_axis">
+        <option value="">None (if not applicable)</option>
+        {% for column in columns %}
+            <option value="{{ column }}">{{ column }}</option>
+        {% endfor %}
+    </select><br>
+    <button type="submit" class="submit-btn">Generate Plot</button>
+</form>
+<br><br>
+<h2>Model Training and Evaluation</h2>
+<form action="/" method="POST">
+    <input type="hidden" name="action" value="Train Model">
+
+    <!-- Target Column Dropdown -->
+    <label for="target">Select Target Column:</label><br>
+    <select name="target" required>
+        {% for column in columns %}
+            <option value="{{ column }}">{{ column }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <!-- Learning Rate Slider -->
+    <label for="learning_rate">Learning Rate: <span id="learning_rate_value">0.1</span></label><br>
+    <input type="range" name="learning_rate" id="learning_rate" min="0.01" max="1.0" step="0.01" value="0.1"
+        oninput="document.getElementById('learning_rate_value').innerText = this.value;"><br><br>
+
+    <!-- Number of Estimators Slider -->
+    <label for="n_estimators">Number of Estimators: <span id="n_estimators_value">100</span></label><br>
+    <input type="range" name="n_estimators" id="n_estimators" min="10" max="1000" step="10" value="100"
+        oninput="document.getElementById('n_estimators_value').innerText = this.value;"><br><br>
+
+    <!-- Max Depth Slider -->
+    <label for="max_depth">Max Depth: <span id="max_depth_value">3</span></label><br>
+    <input type="range" name="max_depth" id="max_depth" min="1" max="10" step="1" value="3"
+        oninput="document.getElementById('max_depth_value').innerText = this.value;"><br><br>
+
+    <!-- Optimization Method Dropdown -->
+    <label for="optimization_method">Optimization Method:</label><br>
+    <select name="optimization_method" required>
+        <option value="none">None</option>
+        <option value="grid_search">Grid Search</option>
+        <option value="random_search">Random Search</option>
+    </select><br><br>
+
+    <button type="submit" class="submit-btn">Train Model</button>
+</form>
+
+
+               
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>Uploaded File: {{ filename }}</h2>
+            
+            <!-- Display the head of the dataset -->
+            {% if data_head %}
+              <h3>Dataset Preview (Excluding Target Column)</h3>
+             <div class="data-preview">
+                  {{ data_head | safe }}
+             </div>
+            {% endif %}
+
+
+            {% if column_info_html %}
+                <h3>Column Names and Data Types</h3>
+                <div class="data-preview">
+                    {{ column_info_html | safe }}
+                </div>
+            {% endif %}
+            
+            {% if summary_statistics %}
+            <h3>Summary Statistics</h3>
+            <div class="data-preview">
+                {{ summary_statistics | safe }}
+            </div>
+            {% endif %}
+
+            {% if report %}
+                <h3>Classification Report</h3>
+                <pre>{{ report }}</pre>
+            {% endif %}
+
+            {% if plot_url %}
+                <h3>Generated Plot</h3>
+                <img src="data:image/png;base64,{{ plot_url }}" alt="Generated Plot">
+            {% endif %}
+
+            {% if accuracy is not none %}
+                <h3>Model Evaluation</h3>
+                <p>Accuracy: {{ accuracy }}</p>
+                <p>Precision: {{ precision }}</p>
+                <p>Recall: {{ recall }}</p>
+            {% endif %}
+
+            {% if confusion_matrix_url %}
+                <h3>Confusion Matrix</h3>
+                <img src="data:image/png;base64,{{ confusion_matrix_url }}" alt="Confusion Matrix">
+            {% endif %}
+
+            {% if auc_roc_url %}
+                <h3>AUC-ROC Curve</h3>
+                <img src="data:image/png;base64,{{ auc_roc_url }}" alt="AUC-ROC Curve">
+            {% endif %}
+
+            {% if statistical_inferences %}
+                <h3>Statistical Inferences</h3>
+                <p>{{ statistical_inferences }}</p>
+            {% endif %}
+
+        </div>
+    </div>
+    <script>
+        document.getElementById('browse-button').addEventListener('click', function() {
+            document.getElementById('file-input').click();
+        });
+
+        document.getElementById('file-input').addEventListener('change', function() {
+            var filename = this.value.split('\\').pop();  // For Windows
+            filename = filename || this.value.split('/').pop(); // For Unix-based systems
+            document.getElementById('filename').textContent = filename ? filename : 'No file selected';
+        });
+    </script>
+</body>
+</html>

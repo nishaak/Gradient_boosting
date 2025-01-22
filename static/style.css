@@ -120,6 +120,12 @@ select {
     padding: 5px;
 }
 
+select {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+}
+
 select:hover {
     border-color: #00bcd4; /* Aqua blue on hover */
 }
